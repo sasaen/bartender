@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-4relative %-5level %logger{35} %msg%n
+            </pattern>
+
+            <!-- The pattern above has [%thread] removed to simplify the logs, uncomment this out to see also the threads
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} %msg%n
+            </pattern>
+            -->
+        </encoder>
+    </appender>
+
+    <appender name="bartender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./bartender.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>./bartender.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 200MB -->
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 60 files log history -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %-4relative %-5level %logger{35} %msg%n
+            </pattern>
+
+            <!-- The pattern above has [%thread] removed to simplify the logs, uncomment this out to see also the threads
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} %msg%n
+            </pattern>
+            -->
+        </encoder>
+    </appender>
+
+    <!-- 3rdparty Loggers -->
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.springframework.beans" level="info"/>
+    <logger name="org.springframework.beans" level="info"/>
+    <logger name="org.springframework.jdbc" level="info"/>
+    <logger name="org.springframework.transaction" level="info"/>
+    <logger name="org.springframework.orm" level="info"/>
+    <logger name="org.springframework.jms" level="info"/>
+    <logger name="org.apache.activemq" level="info"/>
+    <logger name="org.apache.lucene" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="bartender"/>
+        <appender-ref ref="console"/>
+    </root>
+
+</configuration>
