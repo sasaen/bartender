@@ -33,7 +33,7 @@
 	  http://localhost:8080/health   
 	  http://localhost:8080/metrics   
 	  http://localhost:8080/beans   	    
-  - I added an Integration test that tests multiple requests and gets the list of served drinks. This is useful for invoking concurrently the endpoint.
+  - I added an Integration test that tests multiple requests and gets the list of served drinks. This is useful for invoking concurrently the endpoints.
   - I did not implement a front end (html/javascript), instead I tested it manually with Reslet Client and programatically with the integration test.
   
  
