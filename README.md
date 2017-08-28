@@ -28,13 +28,15 @@
     parallel and distributed systems. 
   - I expected a better integration between Akka and Spring, so that actors would be created by the spring container and injected in other classes but I did not find a 
     way to do that. Injecting the dependencies would help implementing the unit tests by injecting mock Actors.  
+  - Using Akka was a proof of concept to me and seems to work ok, but as I mentioned the integration with Spring could be better. 
+  - Another option would be to implement it using Spring Reactor.
   - As commented above, I used Swagger for the documentation of the endpoints.
   - As an extra, added Spring  Actuator endpoint which provides links to other end points like: health, metrics, beans, etc: 
 	  http://localhost:8080/actuator
 	  http://localhost:8080/health   
 	  http://localhost:8080/metrics   
 	  http://localhost:8080/beans   	    
-  - I added an Integration test that tests multiple requests and gets the list of served drinks. This is useful for invoking concurrently the endpoint.  
+  - I added an Integration test that tests multiple requests and gets the list of served drinks. This is useful for invoking concurrently the endpoints.  
   - I did not implement a front end (html/javascript), instead I tested it manually with Reslet Client and programatically with the integration test.
   
  
