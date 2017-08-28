@@ -69,7 +69,7 @@ public class DrinkRequestController {
             @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(value = "/served-drinks", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getServedDrinks()  {
+    public ResponseEntity<List<DrinkResponse>> getServedDrinks()  {
         List<DrinkResponse> result = service.getServedDrinks();
         ResponseEntity<List<DrinkResponse>> resultResponseEntity = new ResponseEntity<>(result, result != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
         return resultResponseEntity;

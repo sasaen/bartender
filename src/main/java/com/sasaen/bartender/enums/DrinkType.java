@@ -20,6 +20,8 @@ public enum DrinkType {
 
     public static DrinkType getDrinkType(String drinkTypeString) {
         try {
+            if (drinkTypeString==null)
+                throw new IllegalArgumentException();
             return DrinkType.valueOf(DrinkType.class, drinkTypeString);
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Invalid drink type, valid values: " + Arrays.asList(DrinkType.values()));

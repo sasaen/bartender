@@ -43,7 +43,7 @@ public class DrinkDispatcherActor extends UntypedActor {
     }
 
     @Autowired
-    private ActorUtil actorUtil;
+    private ActorUtilImpl actorUtilImpl;
 
     @Value("${drink.dispatcher.capacity}")
     private int capacity;
@@ -69,7 +69,7 @@ public class DrinkDispatcherActor extends UntypedActor {
     public void preStart() {
         logger.debug("creating workers " + capacity + " " + this);
         for (int i = 0; i < capacity; i++) {
-            availableDrinkWorkers.add(actorUtil.getActor(DrinkWorker.DRINK_WORKER_TYPE, DrinkWorker.DRINK_WORKER_TYPE + i));
+            availableDrinkWorkers.add(actorUtilImpl.getActor(DrinkWorker.DRINK_WORKER_TYPE, DrinkWorker.DRINK_WORKER_TYPE + i));
         }
     }
 
@@ -123,7 +123,7 @@ public class DrinkDispatcherActor extends UntypedActor {
     }
 
     private void notifyRegistry(Object message) {
-        actorUtil.getRegistryActor().tell(message, getSelf());
+        actorUtilImpl.getRegistryActor().tell(message, getSelf());
     }
 
     private void clearWaitingActor(DrinkRequestMessage drink) {
@@ -181,11 +181,11 @@ public class DrinkDispatcherActor extends UntypedActor {
     @Override
     public String toString() {
         return "DrinkDispatcherActor{" +
-                ", capacity=" + capacity +
+                " capacity=" + capacity +
                 ", availableDrinkWorkers=" + availableDrinkWorkers.size() +
                 ", allocatedDrinkWorkers=" + allocatedDrinkWorkers.size() +
                 ", beingServedActors=" + beingServedActors.size() +
                 ", waitingActors=" + waitingActors.size() +
-                "} " + super.toString();
+                "} " ;
     }
 }

@@ -17,11 +17,11 @@ import static com.sasaen.bartender.enums.DrinkRequestStatus.*;
  */
 @Component("drinkRequestActor")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-class DrinkRequestActor extends UntypedActor {
+public class DrinkRequestActor extends UntypedActor {
 
 
     @Autowired
-    private ActorUtil actorUtil;
+    private ActorUtilImpl actorUtilImpl;
 
     private ActorRef requestActor;
 
@@ -34,12 +34,12 @@ class DrinkRequestActor extends UntypedActor {
                 logger.debug("communicating request drink= " + drink);
 
                 requestActor = getSender();
-                actorUtil.getDispatcherActor().tell(drink, getSelf());
+                actorUtilImpl.getDispatcherActor().tell(drink, getSelf());
             } else if (drink.getDrinkStatus() == DRINK_REQUEST_ACCEPTED_ACK) {
                 logger.debug("communicating request approved ack drink= " + drink);
 
                 requestActor = getSender();
-                actorUtil.getDispatcherActor().tell(drink, getSelf());
+                actorUtilImpl.getDispatcherActor().tell(drink, getSelf());
             } else if (drink.getDrinkStatus() == DRINK_REQUEST_ACCEPTED) {
                 logger.debug("communicating drink request approved= " + drink);
 
@@ -50,13 +50,13 @@ class DrinkRequestActor extends UntypedActor {
             } else if (drink.getDrinkStatus() == DRINK_REQUEST_TIMEOUT) {
                 logger.debug("communicating tired of waiting= " + drink);
 
-                actorUtil.getDispatcherActor().tell(message, getSelf());
+                actorUtilImpl.getDispatcherActor().tell(message, getSelf());
             } else if (drink.getDrinkStatus() == DRINK_WORKER_AVAILABLE) {
                 logger.debug("communicating drink worker available= " + drink);
 
                 // Send the request again
                 drink.setDrinkStatus(DRINK_REQUESTED);
-                actorUtil.getDispatcherActor().tell(drink, getSelf());
+                actorUtilImpl.getDispatcherActor().tell(drink, getSelf());
             } else {
                 unhandled(message);
             }

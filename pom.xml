@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<akka.version>2.4.2</akka.version>
+		<easymock.version>3.1</easymock.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,13 @@
 			<artifactId>akka-remote_2.11</artifactId>
 			<version>${akka.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-testkit_2.11</artifactId>
+			<version>${akka.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -74,6 +82,13 @@
 			<version>2.4.0</version>
 		</dependency>
 
+		<!--EASYMock-->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

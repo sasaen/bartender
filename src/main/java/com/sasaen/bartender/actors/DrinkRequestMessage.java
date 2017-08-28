@@ -2,6 +2,7 @@ package com.sasaen.bartender.actors;
 
 import com.sasaen.bartender.enums.DrinkRequestStatus;
 import com.sasaen.bartender.enums.DrinkType;
+import com.sasaen.bartender.request.RequestIdGenerator;
 import com.sasaen.bartender.response.DrinkResponse;
 import org.springframework.util.Assert;
 
@@ -31,9 +32,9 @@ public class DrinkRequestMessage {
      */
     private DrinkRequestStatus drinkStatus;
 
-    public DrinkRequestMessage(String customer, long requestId, DrinkType drinkType) {
+    public DrinkRequestMessage(String customer, DrinkType drinkType) {
         this.customer = customer;
-        this.requestId = requestId;
+        this.requestId = RequestIdGenerator.nextId();
         this.drinkStatus = DrinkRequestStatus.DRINK_REQUESTED;
         this.drinkType = drinkType;
 

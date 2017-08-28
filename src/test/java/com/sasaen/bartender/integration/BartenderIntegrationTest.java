@@ -1,7 +1,7 @@
 package com.sasaen.bartender.integration;
 
 import akka.actor.ActorRef;
-import com.sasaen.bartender.actors.ActorUtil;
+import com.sasaen.bartender.actors.ActorUtilImpl;
 import com.sasaen.bartender.actors.DrinkDispatcherActor;
 import com.sasaen.bartender.response.DrinkResponse;
 import org.junit.Before;
@@ -35,7 +35,6 @@ public class BartenderIntegrationTest {
     @LocalServerPort
     private int port;
 
-
     @Autowired
     private ConfigurableApplicationContext context;
     private TestRestTemplate restTemplate = new TestRestTemplate();
@@ -50,8 +49,8 @@ public class BartenderIntegrationTest {
 
         init = true;
 
-        ActorUtil actorUtil = context.getBean(ActorUtil.class);
-        actorUtil.registerSingletonActors();
+        ActorUtilImpl actorUtilImpl = context.getBean(ActorUtilImpl.class);
+        actorUtilImpl.registerSingletonActors();
     }
 
     @Test
@@ -83,8 +82,8 @@ public class BartenderIntegrationTest {
         logger.info("Waiting for the bartender to be freed up and show dispatcher status");
         Thread.sleep(5000);
 
-        ActorUtil actorUtil = context.getBean(ActorUtil.class);
-        actorUtil.getDispatcherActor().tell(DrinkDispatcherActor.InternalMessage.PRINT_INTERNAL_STATUS, ActorRef.noSender());
+        ActorUtilImpl actorUtilImpl = context.getBean(ActorUtilImpl.class);
+        actorUtilImpl.getDispatcherActor().tell(DrinkDispatcherActor.InternalMessage.PRINT_INTERNAL_STATUS, ActorRef.noSender());
 
         Thread.sleep(5000);
     }
