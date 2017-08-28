@@ -17,7 +17,7 @@ public class RequestIdGenerator {
 
     public static synchronized long nextId() {
         long andIncrement = requestIdCounter.getAndIncrement();
-        logger.info("generated "+andIncrement);
+        logger.debug("generated "+andIncrement);
         return andIncrement;
     }
 

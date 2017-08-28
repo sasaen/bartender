@@ -33,15 +33,12 @@ public class RequestIdGeneratorTest {
             Runnable r = ()->{
                 long id = RequestIdGenerator.nextId();
                 sortedIdGeneratedSet.add(Long.valueOf(id));
-                logger.info("Added id "+id);
-
                 countDownLatch.countDown();
             };
             new Thread(r).start();
         }
 
         countDownLatch.await();
-
 
         logger.info("Set size "+sortedIdGeneratedSet.size());
         for (long i = firstId; i < firstId+iterations; i++) {
