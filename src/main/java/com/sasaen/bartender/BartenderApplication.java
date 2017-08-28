@@ -1,9 +1,6 @@
 package com.sasaen.bartender;
 
-import akka.actor.ActorRef;
 import com.sasaen.bartender.actors.ActorUtil;
-import com.sasaen.bartender.actors.DrinkDispatcherActor;
-import com.sasaen.bartender.actors.DrinkRegistryActor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

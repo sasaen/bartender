@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.sasaen.bartender.enums.DrinkStatus.DRINK_READY;
+import static com.sasaen.bartender.enums.DrinkRequestStatus.DRINK_READY;
 
 /**
+ * This actor keeps  a list of the prepared drinks.
+ *
  * Created by santoss on 27/08/2017.
  */
 @Component("drinkRegistryActor")

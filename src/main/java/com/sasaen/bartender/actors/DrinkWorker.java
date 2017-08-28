@@ -2,7 +2,7 @@ package com.sasaen.bartender.actors;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import com.sasaen.bartender.enums.DrinkStatus;
+import com.sasaen.bartender.enums.DrinkRequestStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ class DrinkWorker extends UntypedActor {
                 e.printStackTrace();
             }
             logger.info("**** prepared drink= " + drink);
-            drink.setDrinkStatus(DrinkStatus.DRINK_READY);
+            drink.setDrinkStatus(DrinkRequestStatus.DRINK_READY);
             getSender().tell(drink, getSelf());
         } else {
             unhandled(message);

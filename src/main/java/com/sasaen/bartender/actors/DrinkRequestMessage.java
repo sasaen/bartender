@@ -1,8 +1,8 @@
 package com.sasaen.bartender.actors;
 
-import com.sasaen.bartender.enums.DrinkStatus;
+import com.sasaen.bartender.enums.DrinkRequestStatus;
 import com.sasaen.bartender.enums.DrinkType;
-import com.sasaen.bartender.result.Result;
+import com.sasaen.bartender.response.DrinkResponse;
 import org.springframework.util.Assert;
 
 /**
@@ -10,28 +10,45 @@ import org.springframework.util.Assert;
  */
 public class DrinkRequestMessage {
 
+    /**
+     * The request id is unique.
+     * This is the only field used in equals() and hashCode() for simplicity/performance.
+     */
     private final long requestId;
-    private final String customer;
-    private DrinkType drinkType;
 
-    // DrinkStatus is intentionally not included in hashCode and equals due to objects of this class
-    // are meant to be added as keys in Maps and the drinkStatus value is to be updated.
-    private DrinkStatus drinkStatus;
+    /**
+     * The customer name.
+     */
+    private final String customer;
+
+    /**
+     * The drink type.
+     */
+    private final DrinkType drinkType;
+
+    /**
+     * The drink type, subject to be updated by actors.
+     */
+    private DrinkRequestStatus drinkStatus;
 
     public DrinkRequestMessage(String customer, long requestId, DrinkType drinkType) {
         this.customer = customer;
         this.requestId = requestId;
-        this.drinkStatus = com.sasaen.bartender.enums.DrinkStatus.DRINK_REQUESTED;
+        this.drinkStatus = DrinkRequestStatus.DRINK_REQUESTED;
         this.drinkType = drinkType;
 
         checkNulls();
     }
 
-    private void checkNulls() {
-        Assert.notNull(customer, "customer must not be null");
-        Assert.notNull(requestId, "requestId must not be null");
-        Assert.notNull(drinkStatus, "drinkStatus must not be null");
-        Assert.notNull(drinkType, "drinkType must not be null");
+    /**
+     * Creates a <code>DrinkResponse</code> object from this message.
+     * @return
+     */
+    public DrinkResponse toResult() {
+        DrinkResponse result = new DrinkResponse();
+        result.setDrinkType(getDrinkType().name());
+        result.setCustomer(getCustomer());
+        return result;
     }
 
     public DrinkType getDrinkType() {
@@ -46,13 +63,12 @@ public class DrinkRequestMessage {
         return customer;
     }
 
-
-    public void setDrinkStatus(DrinkStatus drinkStatus) {
+    public void setDrinkStatus(DrinkRequestStatus drinkStatus) {
         this.drinkStatus = drinkStatus;
         checkNulls();
     }
 
-    public DrinkStatus getDrinkStatus() {
+    public DrinkRequestStatus getDrinkStatus() {
         return drinkStatus;
     }
 
@@ -63,24 +79,12 @@ public class DrinkRequestMessage {
 
         DrinkRequestMessage that = (DrinkRequestMessage) o;
 
-        if (requestId != that.requestId) return false;
-        if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
-        return drinkType == that.drinkType;
+        return requestId == that.requestId;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (requestId ^ (requestId >>> 32));
-        result = 31 * result + (customer != null ? customer.hashCode() : 0);
-        result = 31 * result + (drinkType != null ? drinkType.hashCode() : 0);
-        return result;
-    }
-
-    public Result toResult(){
-        Result result = new Result();
-        result.setDrinkType(getDrinkType().name());
-        result.setCustomer(getCustomer());
-        return result;
+        return (int) (requestId ^ (requestId >>> 32));
     }
 
     @Override
@@ -91,5 +95,12 @@ public class DrinkRequestMessage {
                 ", customer='" + customer + '\'' +
                 ", drinkStatus=" + drinkStatus +
                 '}';
+    }
+
+    private void checkNulls() {
+        Assert.notNull(customer, "customer must not be null");
+        Assert.notNull(requestId, "requestId must not be null");
+        Assert.notNull(drinkStatus, "drinkStatus must not be null");
+        Assert.notNull(drinkType, "drinkType must not be null");
     }
 }

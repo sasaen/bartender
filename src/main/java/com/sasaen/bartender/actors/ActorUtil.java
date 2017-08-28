@@ -8,6 +8,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
+ * Utility class to handle the Actor creation.
+ * It also registers in the Spring container 2 singleton actors: Dispatcher and Registry.
+ *
  * Created by santoss on 26/08/2017.
  */
 @Component

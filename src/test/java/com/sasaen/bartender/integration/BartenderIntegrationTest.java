@@ -2,7 +2,8 @@ package com.sasaen.bartender.integration;
 
 import akka.actor.ActorRef;
 import com.sasaen.bartender.actors.ActorUtil;
-import com.sasaen.bartender.result.Result;
+import com.sasaen.bartender.actors.DrinkDispatcherActor;
+import com.sasaen.bartender.response.DrinkResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +57,7 @@ public class BartenderIntegrationTest {
     @Test
     public void requestDrinkNoWait() throws Exception {
         Map<Boolean, Integer> resultInvocationCountMap = new HashMap<>();
-        int numberOfInvocations = 400;
+        int numberOfInvocations = 700;
         CountDownLatch countDownLatch = new CountDownLatch(numberOfInvocations);
 
         logger.info("Launching  "+numberOfInvocations+" drink requests");
@@ -78,6 +79,14 @@ public class BartenderIntegrationTest {
         assertEquals(2, resultInvocationCountMap.size());
         assertEquals(numberOfInvocations, resultInvocationCountMap.get(Boolean.FALSE) + resultInvocationCountMap.get(Boolean.TRUE));
         assertTrue(resultInvocationCountMap.get(Boolean.FALSE) > resultInvocationCountMap.get(Boolean.TRUE));
+
+        logger.info("Waiting for the bartender to be freed up and show dispatcher status");
+        Thread.sleep(5000);
+
+        ActorUtil actorUtil = context.getBean(ActorUtil.class);
+        actorUtil.getDispatcherActor().tell(DrinkDispatcherActor.InternalMessage.PRINT_INTERNAL_STATUS, ActorRef.noSender());
+
+        Thread.sleep(5000);
     }
 
     @Test
@@ -86,7 +95,7 @@ public class BartenderIntegrationTest {
         requestDrinkAndWait("A", "BEER", HttpStatus.OK);
         requestDrinkAndWait("B", "DRINK", HttpStatus.TOO_MANY_REQUESTS);
 
-        Thread.sleep(4000);
+        Thread.sleep(5000);
 
         requestDrinkAndWait("A", "BEER", HttpStatus.OK);
         requestDrinkAndWait("A", "DRINK", HttpStatus.TOO_MANY_REQUESTS);
@@ -106,9 +115,9 @@ public class BartenderIntegrationTest {
     private void requestDrinkNoWait(final String customer, final String drinkType, CountDownLatch countDownLatch,
                                     Map<Boolean, Integer> resultInvocationCountMap) throws InterruptedException {
         Runnable runnable = () -> {
-            ResponseEntity<Result> responseEntity =
+            ResponseEntity<DrinkResponse> responseEntity =
                     restTemplate.exchange("http://localhost:" + port + "/bartender/request/" + customer + "/" + drinkType,
-                            HttpMethod.POST, null, new ParameterizedTypeReference<Result>() {
+                            HttpMethod.POST, null, new ParameterizedTypeReference<DrinkResponse>() {
                             });
             Boolean success = responseEntity.getStatusCode() == HttpStatus.OK;
 
@@ -131,15 +140,12 @@ public class BartenderIntegrationTest {
     }
 
     private void requestDrinkAndWait(String customer, String drinkType, HttpStatus expectedResult) {
-        ResponseEntity<Result> responseEntity =
+        ResponseEntity<DrinkResponse> responseEntity =
                 restTemplate.exchange("http://localhost:" + port + "/bartender/request/" + customer + "/" + drinkType,
-                        HttpMethod.POST, null, new ParameterizedTypeReference<Result>() {
+                        HttpMethod.POST, null, new ParameterizedTypeReference<DrinkResponse>() {
                         });
 
         assertEquals(expectedResult, responseEntity.getStatusCode());
-        assertNotNull(responseEntity.getBody());
-        assertEquals(customer, responseEntity.getBody().getCustomer());
-        assertEquals(drinkType, responseEntity.getBody().getDrinkType());
     }
 
     @Test
@@ -151,9 +157,9 @@ public class BartenderIntegrationTest {
         logger.info("Waiting for the bartender to serve the drink");
         Thread.sleep(5000);
 
-        ResponseEntity<List<Result>> responseEntity =
+        ResponseEntity<List<DrinkResponse>> responseEntity =
                 restTemplate.exchange("http://localhost:" + port + "/bartender/served-drinks/",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Result>>() {
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<DrinkResponse>>() {
                         });
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
