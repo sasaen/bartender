@@ -42,7 +42,7 @@
  
  TODO:
   - Write unit tests for the Actor classes. I was expecting an intuitive way to mock the behaviour of these actors. This needs further investigation.
-  - Find out best practices for Akka actor creation, life cycle, error handling and integration with Spring.  
+  - Find out best practices for Akka actor creation, supervision, life cycle, error handling and integration with Spring.  
   - It would be nice to implement a front end to make the requests and also list the served drinks that would be refreshed asynchronously using a websocket. 
     (Please run the action-monitor project that can be found in github)  
   - Use Lombok for generating getter/setter/hashCode/Equals and injection of @Slf4j.
